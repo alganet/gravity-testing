@@ -40,18 +40,14 @@ class Boot extends Container
         }
 
         foreach ($bootFiles['boot'] as $booted) {
-            $prev = getcwd();
             $bootedFiles = parse_ini_file($booted, true);
-
             if (!isset($bootedFiles['load'])) {
                 continue;
             }
 
-            chdir(dirname(dirname($booted)));
             foreach ($bootedFiles['load'] as $bootLoad) {
-                $this->loadFile($bootLoad);
+                $this->loadFile(dirname($booted) . DIRECTORY_SEPARATOR . $bootLoad);
             }
-            chdir($prev);
         }
 
         foreach ($bootFiles['load'] as $loaded) {
